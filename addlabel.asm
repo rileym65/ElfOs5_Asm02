@@ -17,8 +17,10 @@
               extrn     error
               extrn     findlabel
               extrn     load_d
+              extrn     load_ra
               extrn     nextlabel
               extrn     pass
+              extrn     scope
 
               hlpr      load_d,pass    ; get current pass
               smi       2              ; do not add in pass 2
@@ -46,9 +48,27 @@ copy_name:    lda       rf             ; get byte from name
               ori       080h           ; set high bit
               str       r8             ; and put it back
               inc       r8
-              glo       rb             ; save label flags
+
+              push      ra             ; save label value
+              hlpr      load_ra,scope  ; get current scope
+              glo       ra             ; check for local variable
+              str       r2
+              ghi       ra
+              or 
+              lbz       not_local      ; jump if not local variable
+              glo       rb             ; get flags
+              ori       4              ; set local flag
+              plo       rb
+not_local:    glo       rb             ; save label flags
               str       r8
               inc       r8
+              ghi       ra             ; store scope
+              str       r8
+              inc       r8
+              glo       ra
+              str       r8
+              inc       r8
+              pop       ra             ; recover value
               ghi       ra             ; store label value
               str       r8
               inc       r8

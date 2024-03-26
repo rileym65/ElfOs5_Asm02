@@ -35,6 +35,7 @@ OBJS = \
 	opds.prg \
 	opdw.prg \
 	opend.prg \
+	opendp.prg \
 	opequ.prg \
 	opeever.prg \
 	opever.prg \
@@ -44,6 +45,7 @@ OBJS = \
 	oporg.prg \
 	opout.prg \
 	oppop.prg \
+	opproc.prg \
 	oppublic.prg \
 	oppush.prg \
 	output.prg \
@@ -59,6 +61,7 @@ OBJS = \
 	tolc.prg\
 	touc.prg \
 	writeextrn.prg \
+	writelocal.prg \
 	writeln.prg \
 	writelstfile.prg \
 	writeoutput.prg \
@@ -81,6 +84,7 @@ clean:
 
 lists:
 	adjlst adddefine.lst adddefine
+	adjlst addlabel.lst addlabel
 	adjlst asmpass.lst asmpass
 	adjlst check1805.lst check1805
 	adjlst convertnum.lst convertnum
@@ -95,6 +99,7 @@ lists:
 	adjlst nextline.lst nextline
 	adjlst opend.lst opend
 	adjlst oporg.lst oporg
+	adjlst opproc.lst opproc
 	adjlst output.lst output
 	adjlst readln.lst readln
 	adjlst replace.lst replace

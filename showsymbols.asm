@@ -31,6 +31,8 @@ padloop:      glo       rc             ; see if enough characters displayed
               dec       rc             ; decrement count
               lbr       padloop        ; loop until 20 characters displayed
 paddone:      inc       r7             ; move past symbol flags
+              inc       r7             ; move past symbol scope
+              inc       r7
               lda       r7             ; retrieve symbol value
               phi       rd
               lda       r7

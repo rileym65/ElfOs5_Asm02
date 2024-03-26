@@ -21,7 +21,9 @@
               extrn     oppop
               extrn     oppush
               extrn     opend
+              extrn     opendp
               extrn     opldn
+              extrn     opproc
               extrn     oppublic
               extrn     opver
               extrn     opever
@@ -182,6 +184,10 @@ insttab:      db        'ad',('d'+80h),1,0f4h,0
               dw             oppublic
               db        'extr',('n'+80h),4
               dw             opextrn
+              db        'pro',('c'+80h),4
+              dw             opproc
+              db        'end',('p'+80h),4
+              dw             opendp
               db        'rld',('i'+80h),6,068h,0c0h
               db        'rlx',('a'+80h),5,068h,060h
               db        'rsx',('d'+80h),5,068h,0a0h

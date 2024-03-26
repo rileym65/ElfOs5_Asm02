@@ -41,6 +41,7 @@
               extrn     extrntype
               extrn     findlabel
               extrn     isextrn
+              extrn     islocal
               extrn     load_d
               extrn     load_ra
               extrn     ltrimrf
@@ -54,11 +55,13 @@
               extrn     save_d
               extrn     strcasecmpin
               extrn     writeextrn
+              extrn     writelocal
 
               ldi       '?'            ; set extrn type to 16-bits
               hlpr      save_d,extrntype
               ldi       0              ; clear isextrn flag
               hlpr      save_d,isextrn
+              hlpr      save_d,islocal ; clear local flag
               mov       r7,nstack      ; point to number stack
               mov       r8,ostack      ; point to operator stack
               ldi       0              ; clear stack counters
@@ -207,11 +210,17 @@ term_no12:    push      rb             ; save consumed registers
 
 term_no13:    call      findlabel      ; see if term is a label reference
               lbdf      term_no14      ; jump if label not found
-              lda       ra             ; get label flags
+              ldn       ra             ; get label flags
               ani       1              ; check for external reference
               lbz       not_extrn      ; jump if not
               hlpr      save_d,isextrn ; signal extern used
-not_extrn:    lda       ra             ; retrieve value
+not_extrn:    lda       ra             ; recover flags
+              ani       0ch            ; check for local reference
+              lbz       not_local      ; jump if not local
+              hlpr      save_d,islocal ; signal local variable
+not_local:    inc       ra             ; move past scope
+              inc       ra
+              lda       ra             ; retrieve value
               plo       re
               lda       ra
               plo       ra
@@ -873,8 +882,13 @@ done_1:       dec       r7             ; retrieve final result
               glo       re
               plo       r7
               hlpr      load_d,isextrn ; was an external used
-              lbz       return         ; jump if not
+              lbz       notextrn       ; jump if not
               call      writeextrn     ; otherwise write external reference
+              lbr       return         ; cannot be local if extrnal reference
+notextrn:     hlpr      load_d,islocal ; check for local used
+              ani       4              ; check for local variable
+              lbz       return         ; jump if not
+              call      writelocal     ; otherwise write local reference
 return:       rtn                      ; and return to caller
 
 ; *******************************************

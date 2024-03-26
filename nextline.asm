@@ -57,7 +57,21 @@ loop:         mov       rf,line        ; where to read the line
               lbz       ignore         ; jump if ignore is active
               glo       re             ; recover action
 
-              call      strcasecmpin   ; check for #include
+              call      strcasecmpin   ; check for #error
+              db        '#error ',0
+              lbnf      not_error      ; jump if not
+              hlpr      load_d,action  ; get action
+              smi       'N'            ; are lines being processed
+              lbz       loop           ; ignore if so
+              call      ltrimrf        ; move past any spaces
+              call      o_msg          ; display error message
+              call      o_inmsg
+              db        10,13,0
+              call      error          ; call error routine
+              lbr       loop           ; then back to loop
+              
+
+not_error:    call      strcasecmpin   ; check for #include
               db        '#include ',0
               lbnf      not_include    ; jump if not
               hlpr      load_d,action  ; get action

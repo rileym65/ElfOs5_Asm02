@@ -30,6 +30,8 @@ final:        shr                      ; shift symbol back
               ldi       ' '            ; add a space
               str       rf
               inc       rf
+              inc       ra             ; move past scope
+              inc       ra
               lda       ra             ; retrieve symbol value
               phi       rd
               lda       ra
@@ -41,7 +43,9 @@ final:        shr                      ; shift symbol back
               mov       rd,objfildes   ; point to fildes
               call      writeln        ; write out record
               lbr       loop           ; loop for any more labels
-notpublic:    inc       ra             ; move past address
+notpublic:    inc       ra             ; move past scope
+              inc       ra
+              inc       ra             ; move past address
               inc       ra
               lbr       loop           ; and check next entry
 return:       rtn                      ; return to caller

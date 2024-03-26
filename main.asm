@@ -53,8 +53,10 @@ nstack:       dw        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ostack:       db        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 build:        dw        0
 isextrn:      db        0
+islocal:      db        0
 extrntype:    db        0
 extrnlabel:   dw        0
+scope:        dw        0
 label:        ds        32
 
 ; ***************************************
@@ -455,6 +457,7 @@ lstbytes:     db        0
               public    inccount
               public    incopy
               public    isextrn
+              public    islocal
               public    label
               public    load_d
               public    load_r8
@@ -489,6 +492,7 @@ lstbytes:     db        0
               public    save_r8
               public    save_ra
               public    save_rf
+              public    scope
               public    srcfile
               public    srcfildes
               public    srcsector

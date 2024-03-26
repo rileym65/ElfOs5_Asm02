@@ -29,7 +29,7 @@ loop:         ldn       ra             ; get byte from labels
 iloop:        lda       rf             ; get byte from source
               call      tolc           ; convert to uppercase
               str       r2             ; store for comparison
-              lda       ra             ; get byte from opcode table
+              lda       ra             ; get byte from label
               shl                      ; shift high bit to DF
               lbdf      lastchar       ; jump if last character
               shr                      ; shift if back
@@ -40,6 +40,8 @@ tloop:        lda       ra             ; find end of entry
               shl
               lbnf      tloop
 skipdata:     inc       ra             ; move past entry data
+              inc       ra
+              inc       ra
               inc       ra
               inc       ra
               lbr       loop           ; check next entry
@@ -72,6 +74,10 @@ good:         irx                      ; remove rf from stack
 ; label entry
 ;       0-n - label name, hit bit set terminates
 ;       n+1 - label flags
-;             bit 1 - external
-;             bit 2 - declared public
-; n+2 - n+3 - Label value
+;             bit 0 - external        (1)
+;             bit 1 - declared public (2)
+;             bit 2 - local label     (4)
+;             bit 3 - proc name       (8)
+; n+2 - n+3 - Label scope ($0000 for global)
+; n+4 - n+5 - Label value
+

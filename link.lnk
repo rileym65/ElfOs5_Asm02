@@ -30,6 +30,7 @@ add opdb.prg
 add opds.prg
 add opdw.prg
 add opend.prg
+add opendp.prg
 add opequ.prg
 add opeever.prg
 add opever.prg
@@ -39,6 +40,7 @@ add opldn.prg
 add oporg.prg
 add opout.prg
 add oppop.prg
+add opproc.prg
 add oppublic.prg
 add oppush.prg
 add output.prg
@@ -54,6 +56,7 @@ add tohex.prg
 add tolc.prg
 add touc.prg
 add writeextrn.prg
+add writelocal.prg
 add writeln.prg
 add writelstfile.prg
 add writeoutput.prg
