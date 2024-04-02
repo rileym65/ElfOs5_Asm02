@@ -7,6 +7,7 @@
               extrn     address
               extrn     buffer
               extrn     extrnlabel
+              extrn     extrnlow
               extrn     extrntype
               extrn     load_d
               extrn     load_ra
@@ -40,9 +41,20 @@ not_hi:       glo       re             ; recover type
               ldi       'v'
 writetype:    str       rf             ; store into buffer
               inc       rf
+              stxd                     ; save a copy of the type
               hlpr      load_rd,address ; get current assembly address
               call      f_hexout4      ; conver to ascii
-              ldi       0              ; terminate line
+              irx                      ; recover type
+              ldx
+              smi       '^'            ; check for high
+              lbnz      terminate      ; jump if not
+              ldi       ' '            ; add a space
+              str       rf
+              inc       rf
+              hlpr      load_d,extrnlow ; get low value of symbol
+              plo       rd             ; put into rd
+              call      f_hexout2      ; and convert it
+terminate:    ldi       0              ; terminate line
               str       rf
               mov       rf,buffer      ; point to reference line
               mov       rd,objfildes   ; point to output fildes

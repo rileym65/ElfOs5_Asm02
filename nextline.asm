@@ -318,6 +318,7 @@ havenests:    smi       1              ; subtract number of nests
               ldi       0
               adci      nests.1
               phi       rc
+              dec       rc             ; need prior nest
               ldn       rc             ; get next nesting action
               hlpr      save_d,action  ; and write to action
               lbr       loop           ; then read next line

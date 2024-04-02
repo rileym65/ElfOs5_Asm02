@@ -7,8 +7,11 @@
               extrn     buffer
               extrn     objfildes
               extrn     labels
+              extrn     load_r7
+              extrn     scope
               extrn     writeln
 
+              hlpr      load_r7,scope  ; get current scope
               mov       ra,labels      ; get address of label table
 loop:         ldn       ra             ; see if done
               lbz       return         ; jump if no more labels
@@ -30,13 +33,25 @@ final:        shr                      ; shift symbol back
               ldi       ' '            ; add a space
               str       rf
               inc       rf
-              inc       ra             ; move past scope
-              inc       ra
+              lda       ra             ; retrieve scope
+              phi       r8
+              lda       ra
+              plo       r8
               lda       ra             ; retrieve symbol value
               phi       rd
               lda       ra
               plo       rd
-              call      f_hexout4      ; convert to ascii
+              glo       r7             ; check scope
+              str       r2
+              glo       r8
+              sm
+              lbnz      loop           ; do not write if not same scope
+              ghi       r7             ; check high byte of scope
+              str       r2
+              ghi       r8
+              sm
+              lbnz      loop           ; do not write if not same scope
+dowrite:      call      f_hexout4      ; convert to ascii
               ldi       0              ; terminate line
               str       rf
               mov       rf,buffer      ; point to buffer

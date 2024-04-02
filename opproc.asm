@@ -7,6 +7,7 @@
               extrn     address
               extrn     buffer
               extrn     addlabel
+              extrn     findlabel
               extrn     labelchar
               extrn     load_d
               extrn     load_r8
@@ -44,8 +45,20 @@ name_dn:      ldi       0              ; terminate name
               ldi       0              ; proc address is zero
               phi       ra
               plo       ra
+              push      rf             ; save label name
               call      addlabel       ; add the label
-              ldi       0              ; set address to zero
+              pop       rf             ; recover label name
+              hlpr      load_d,pass    ; get pass
+              smi       1              ; check for pass 1
+              lbz       pass1          ; jump if so
+              call      findlabel      ; get proc data
+              inc       ra             ; move past flags
+              lda       ra             ; retrieve scope
+              phi       r8
+              lda       ra
+              plo       r8
+              hlpr      save_r8,scope  ; set scope of proc
+pass1:        ldi       0              ; set address to zero
               phi       rf
               plo       rf
               hlpr      save_rf,address

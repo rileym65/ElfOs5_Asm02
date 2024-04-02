@@ -38,6 +38,7 @@
               extrn     convertnum
               extrn     div16
               extrn     error
+              extrn     extrnlow
               extrn     extrntype
               extrn     findlabel
               extrn     isextrn
@@ -226,6 +227,8 @@ not_local:    inc       ra             ; move past scope
               plo       ra
               glo       re
               phi       ra
+              glo       ra             ; save low value of label
+              hlpr      save_d,extrnlow
               op        npush          ; push to numeric stack
               lbr       op_loop        ; done with term
 

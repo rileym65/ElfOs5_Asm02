@@ -29,7 +29,7 @@
               extrn     F_1805
 
               call      o_inmsg        ; display banner
-              db        'Asm/02 v0.1',10,13
+              db        'Asm/02 v0.2',10,13
               db        'by Michael H. Riley',10,13,10,13,0
               mov       r9,helpers
               mov       r8,k_himem     ; point to hi memory pointer

@@ -56,6 +56,7 @@ isextrn:      db        0
 islocal:      db        0
 extrntype:    db        0
 extrnlabel:   dw        0
+extrnlow:     db        0
 scope:        dw        0
 label:        ds        32
 
@@ -221,6 +222,18 @@ load_r8:      lda       r3             ; get address
               phi       r8
               br        helpers-1
 
+load_r7:      lda       r3             ; get address
+              phi       r7
+              lda       r3
+              plo       r7
+              lda       r7             ; retrieve the value
+              plo       re
+              lda       r7
+              plo       r7
+              glo       re
+              phi       r7
+              br        helpers-1
+
 opush_in:     lda       r3
 opush:        str       r8
               inc       r8
@@ -305,6 +318,13 @@ donenames:    ldi       0              ; terminate names
               mov       rf,lstfile     ; point to list file
               call      appendext      ; append .lst
               db        '.lst',0
+
+              call      o_inmsg
+              db        'File: ',0
+              mov       rf,srcfile
+              call      o_msg
+              call      o_inmsg
+              db        10,13,10,13,0
 
               ldi       1
               hlpr      save_d,pass    ; set assembly pass
@@ -448,6 +468,7 @@ lstbytes:     db        0
               public    dta
               public    errors
               public    extrnlabel
+              public    extrnlow
               public    extrntype
               public    flags
               public    helpers
@@ -460,6 +481,7 @@ lstbytes:     db        0
               public    islocal
               public    label
               public    load_d
+              public    load_r7
               public    load_r8
               public    load_ra
               public    load_rb

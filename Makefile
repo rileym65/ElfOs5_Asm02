@@ -90,6 +90,7 @@ lists:
 	adjlst convertnum.lst convertnum
 	adjlst defreplace.lst defreplace
 	adjlst directive.lst directive
+	adjlst dopublics.lst dopublics
 	adjlst final.lst final
 	adjlst finddefine.lst finddefine
 	adjlst fopen.lst fopen

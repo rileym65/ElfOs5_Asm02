@@ -12,13 +12,16 @@
               extrn     load_d
               extrn     load_rf
               extrn     ltrimrf
+              extrn     objfildes
               extrn     outaddress
+              extrn     pass
               extrn     save_d
               extrn     save_rf
               extrn     strcasecmpin
               extrn     F_1805
               extrn     F_SHOWLIST
               extrn     F_SHOWSYM
+              extrn     writeln
               extrn     writeoutput
 
               call      strcasecmpin   ; check for .1805
@@ -105,11 +108,23 @@ not_128:      call      strcasecmpin   ; check for page boundary
               op2       addrf,255      ; add 255
               op2       andrf,000h     ; and then mask with 00
               lbr       new_addr       ; save new address
-not_4:
+
+not_4:        call      strcasecmpin   ; check for .link
+              db        '.link',0
+              lbnf      not_5          ; jump if not
+              hlpr      load_d,pass    ; get pass
+              smi       2              ; check for pass 2
+              lbnz      return         ; do nothing on pass 1
+              call      ltrimrf         ; move past any spaces
+              mov       rd,objfildes   ; point to ojbect fildes
+              call      writeln        ; write line for linker
+              rtn                      ; and return to caller
+
+not_5:
 not_page:     call      o_inmsg        ; display error
               db        'Error: Invalid directive',10,13,0
               call      error
-              rtn
+return:       rtn
 
               endp
 

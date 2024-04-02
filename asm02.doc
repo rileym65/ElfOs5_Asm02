@@ -32,6 +32,7 @@ Assembler directives:
   .align 64    - Align address on 64-byte boundary
   .align 128   - Align address on 128-byte boundary
   .align page  - Align address on page boundary (256 bytes)
+  .link text   - Pass text to linker
   .list        - Enable show list
   .sym         - Show Symbols
 
