@@ -27,9 +27,14 @@
               extrn     writelstfile
               extrn     F_SHOWLIST
               extrn     F_LISTFILE
+              extrn     helpers
+              extrn     save
+              extrn     restore
 
-              push      r7             ; save consumed register
-              push      rf
+              op2       save,r7_+rf_
+              mov       r9,helpers
+;              push      r7             ; save consumed register
+;              push      rf
               glo       re
               stxd                     ; save byte to write
               hlpr      load_d,outcount ; get current byte count
@@ -108,8 +113,10 @@ pass_1:       hlpr      load_rf,bytes  ; increment byte count
               smi       16             ; see if 16 bytes have been output
               lbnz      return         ; jump if not
               call      writeoutput    ; output the current bytes
-return:       pop       rf             ; recover consumed register
-              pop       r7
+;return:       pop       rf             ; recover consumed register
+;              pop       r7
+return:       op2       restore,r7_+rf_
+              mov       r9,helpers
               rtn                      ; return to caller
 
               endp

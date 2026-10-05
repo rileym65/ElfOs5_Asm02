@@ -11,6 +11,10 @@
 ; *************************************
               proc      readln
 
+              extrn     helpers
+              extrn     save
+              extrn     restore
+
               push      ra             ; save consumed registers
               push      rb
               push      rc

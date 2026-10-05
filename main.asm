@@ -280,6 +280,9 @@ andrf:        lda       r3
               plo       rf
               br        helpers-1
 
+save:         lbr       K_SAVE
+restore:      lbr       K_RESTORE
+
 ; ***************************************
 
 
@@ -422,7 +425,16 @@ nolstclose:   call      o_inmsg
               lbz       return         ; jump if not
               call      showsymbols    ; otherwise display symbols
 
-return:       rtn
+return:       hlpr      load_rc,errors ; get error count
+              glo       rc             ; zero check
+              str       r2
+              ghi       rc
+              or
+              lsz
+              ldi       0ffh           ; singal errors occured
+              lskp
+              ldi       0              ; signal no errors
+              rtn
               
 buffer:       ds        64
 srcfile:      ds        128
@@ -523,6 +535,8 @@ lstbytes:     db        0
               public    F_LISTFILE
               public    F_SHOWLIST
               public    F_SHOWSYM
+              public    save
+              public    restore
 
               end       begin
 
